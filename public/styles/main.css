@@ -53,3 +53,9 @@ body {
     z-index: 999;
     
 }
+
+/* @media(max-width: 992px){
+    #desktopNav{
+        display: none;
+    }
+}

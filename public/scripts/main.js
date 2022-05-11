@@ -3,34 +3,41 @@
  * Provides the JavaScript interactions for all pages.
  *
  * @author 
- * PUT_YOUR_NAME_HERE
+ * Matthew Martinez & Seokhyun Chang
  */
 
-/** namespace. */
 var rhit = rhit || {};
 
-/** globals */
-rhit.variableName = "";
+var queryMachine = null;
 
-/** function and class syntax examples */
-rhit.functionName = function () {
-	/** function body */
-};
-
-rhit.ClassName = class {
+rhit.QueryMachine = class {
 	constructor() {
+		this.posts = firebase.firestore().collection("posts");
+		this.replies = firebase.firestore().collection("replies");
 
+		this.testQuery();
 	}
 
-	methodName() {
-
+	testQuery(){
+		this.posts.where("author","==","").get()
+		.then((querySnapshot) => {
+			querySnapshot.forEach((doc) => {
+				console.log(doc.id, " => ", doc.data());
+			});
+		});
+		this.replies.where("author","==","").get()
+		.then((querySnapshot) => {
+			querySnapshot.forEach((doc) => {
+				console.log(doc.id, " => ", doc.data());
+			});
+		});
 	}
 }
 
-/* Main */
-/** function and class syntax examples */
+
 rhit.main = function () {
 	console.log("Ready");
+	queryMachine = new rhit.QueryMachine();
 };
 
 rhit.main();
