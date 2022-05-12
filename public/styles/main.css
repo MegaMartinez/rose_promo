@@ -33,6 +33,7 @@ body {
 
 #searchBtn{
     color: white;
+    border-color: white;
 }
 
 .navbar-toggler-icon {
@@ -41,6 +42,18 @@ body {
 
 .page-container {
     margin-top: 75px;
+}
+
+#pageHeader{
+    margin-top: 1em;
+}
+#pageHeaderText{
+    font-size: 1.5em;
+}
+hr{
+    margin: 3px auto;
+    color:rgb(50, 50, 50);
+    border-color:rgb(50, 50, 50);
 }
 
 

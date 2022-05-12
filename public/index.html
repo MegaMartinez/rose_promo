@@ -8,18 +8,22 @@
   <link rel="stylesheet" href="styles/bootstrap-material-design.min.css">
   <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
   <link rel="stylesheet" href="styles/main.css">
-  <title>Rose promo!</title>
+  <title> &nbsp;&nbsp; Rose promo!</title>
 </head>
 
 <body>
-
+  <!-- navigation bar  -->
   <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay">
+
     <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="#"><img src="favicon.ico" width="30" height="30" class="d-inline-block align-top" alt="">Rose-Promo!</a>
-      <button  class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand" href="#">
+        <img id="favIcon" src="favicon.ico" width="30" height="30" class="d-inline-block align-top" alt="">&nbsp;
+        Rose-Promo!</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span id="navbarToggleIcon" class="navbar-toggler-icon"></span>
       </button>
-    
+
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
           <li class="nav-item active">
@@ -28,7 +32,7 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Recent Posts</a>
           </li>
-          
+
 
           <!-- only shown if logged in -->
           <li class="nav-item">
@@ -41,38 +45,52 @@
 
         </ul>
 
-        
+
         <ul class="navbar-nav ml-auto">
           <!-- do not show this when logged in -->
           <li class="nav-item">
-           <a id="signInNavItem" class="nav-link" href="#">Sign-in</a>
-           </li>
-            <!-- //do not show this when logged in -->
+            <a id="signInNavItem" class="nav-link" href="#">Sign-in</a>
+          </li>
+          <!-- //do not show this when logged in -->
 
-        <form  class="form-inline my-2 my-lg-0">
-          <input id="searchBar" class="form" type="search" placeholder="Search">
-          <button id="searchBtn" class="btn " type="submit">Search</button>
-        </form>
+          <form class="form-inline my-2 my-lg-0">
+            <input id="searchBar" class="form" type="search" placeholder="Search">
+            <button id="searchBtn" class="btn " type="submit">Search</button>
+          </form>
         </ul>
-        
-        
+
+
       </div>
     </nav>
+  </div>
+  <!-- //navigation bar  -->
 
 
+  <!-- Page title -->
+  <div class="container">
+    <div id="pageHeader" class="page-header">
+      <h1 id="pageHeaderText">Popular Posts</div>
+      <hr>
+    </div>
+    <!-- <p>description goes here if needed</p> -->
+  </div>
+  <!-- //Page title -->
 
-    <main class="bmd-layout-content">
-      <div id="listPage" class="container page-container">
-        <div id="columns">
 
-          <!-- posts goes here -->
+  <!-- PostContents page continer-->
+  <main class="bmd-layout-content">
+    <div id="PupularPostContents" class="container page-container">
+      <div id="columns">
 
-          
-          <!-- //posts goes here -->
+        <!-- posts goes here -->
 
 
-        </div>
-    </main>
+        <!-- //posts goes here -->
+
+
+      </div>
+  </main>
+  <!-- // PostContents page continer-->
 
 
   <!-- add button button right -->
@@ -84,7 +102,6 @@
   <!-- //add button button right -->
 
 
-  </div>
 
 
 
@@ -103,7 +120,8 @@
   <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
   <script src="/__/firebase/init.js"></script>
   <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
-  <!-- <script src="scripts/rosefire.min.js"></script> --> <!-- you need to implement this first -->
+  <!-- <script src="scripts/rosefire.min.js"></script> -->
+  <!-- you need to implement this first -->
   <script src="scripts/main.js"></script>
 
 </body>
