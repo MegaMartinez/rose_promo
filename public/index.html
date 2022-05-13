@@ -35,12 +35,12 @@
 
 
           <!-- only shown if logged in -->
-          <!-- <li class="nav-item">
+          <li class="nav-item showWhenLoggedIn">
             <a class="nav-link" href="#">Following Posts</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item showWhenLoggedIn">
             <a class="nav-link" href="#">My posts</a>
-          </li> -->
+          </li>
           <!-- //only shown if logged in -->
 
         </ul>
@@ -69,7 +69,24 @@
   <!-- Page title -->
   <div class="container">
     <div id="pageHeader" class="page-header">
-      <h1 id="pageHeaderText">Popular Posts</div>
+      <div id="pageHeaderText"  class="display-inline-block">Recent Posts</div>
+
+      <!-- drop down selection menu -->
+      <div id="dropDownSortingSelection" class="dropdown display-inline-block">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+          <button class="dropdown-item" type="button">Popularity: acceding</button>
+          <button class="dropdown-item" type="button">Popularity: deccending</button>
+          <button class="dropdown-item" type="button">Likes: acceding</button>
+          <button class="dropdown-item" type="button">Likes: deccending</button>
+          <button class="dropdown-item" type="button">Views: acceding</button>
+          <button class="dropdown-item" type="button">Views: deccending</button>
+        </div>
+      </div>
+      <!-- //drop down selection menu -->
       <hr>
     </div>
     <!-- <p>description goes here if needed</p> -->
@@ -95,9 +112,9 @@
 
   <!-- add button button right -->
   <!-- Only shows when logged in -->
-  <!-- <button id="fab" type="button" class="btn  bmd-btn-fab" data-toggle="modal" data-target="#addNewPicture">
+  <button id="fab" type="button" class="btn  bmd-btn-fab showWhenLoggedIn" data-toggle="modal" data-target="#addNewPicture">
     <i class="material-icons">add</i>
-  </button> -->
+  </button>
 
   <!-- //add button button right -->
 
