@@ -69,13 +69,13 @@
   <!-- Page title -->
   <div class="container">
     <div id="pageHeader" class="page-header">
-      <div id="pageHeaderText"  class="display-inline-block">Recent Posts</div>
+      <div id="pageHeaderText" class="display-inline-block">Recent Posts</div>
 
       <!-- drop down selection menu -->
       <div id="dropDownSortingSelection" class="dropdown display-inline-block">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
-          Dropdown
+          Sort
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
           <button class="dropdown-item" type="button">Popularity: acceding</button>
@@ -95,51 +95,111 @@
 
 
   <!-- PostContents page continer-->
-  <main class="bmd-layout-content">
-    <div id="PupularPostContents" class="container page-container">
-      <div id="columns">
+  <div id="PostContents" class="container page-container">
+    <div id="columns">
 
-        <!-- posts goes here -->
+      <!-- posts goes here -->
+
+      <div class="row">
+        <div class="col-lg-6 col-sm-12">
+
+          <a href="Link to detial Post">
+            <div class="card">
+              <div class="card-body"> 
+                <h5 class="card-title">Title of Post goes here</h5>
+                <p class="card-text">detail goes here</p>
+                <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
+                  </small></p>
+              </div>
+            </div>
+          </a>
+
+        </div>
+
+        <div class="col-lg-6 col-sm-12">
+          <a href="Link to detial Post">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Title of Post goes here</h5>
+                <p class="card-text">detail goes here</p>
+                <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
+                  </small></p>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Force next columns to break to new line -->
+        <div class="w-100"></div>
+
+        
+          <div class="col-lg-6 col-sm-12">
+  
+            <a href="Link to detial Post">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Title of Post goes here</h5>
+                  <p class="card-text">detail goes here</p>
+                  <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
+                    </small></p>
+                </div>
+              </div>
+            </a>
+  
+          </div>
+  
+          <div class="col-lg-6 col-sm-12">
+            <a href="Link to detial Post">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Title of Post goes here</h5>
+                  <p class="card-text">detail goes here</p>
+                  <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
+                    </small></p>
+                </div>
+              </div>
+            </a>
+          </div>  
+      
 
 
-        <!-- //posts goes here -->
+      <!-- //posts goes here -->
+
+    </div>
+    <!-- </main> -->
 
 
-      </div>
-  </main>
-  <!-- // PostContents page continer-->
+    <!-- add button button right -->
+    <!-- Only shows when logged in -->
+    <button id="fab" type="button" class="btn  bmd-btn-fab showWhenLoggedIn" data-toggle="modal"
+      data-target="#addNewPicture">
+      <i class="material-icons">add</i>
+    </button>
 
-
-  <!-- add button button right -->
-  <!-- Only shows when logged in -->
-  <button id="fab" type="button" class="btn  bmd-btn-fab showWhenLoggedIn" data-toggle="modal" data-target="#addNewPicture">
-    <i class="material-icons">add</i>
-  </button>
-
-  <!-- //add button button right -->
-
-
+    <!-- //add button button right -->
 
 
 
 
 
 
-  <script src="scripts/jquery.min.js"></script>
-  <script src="scripts/popper.js"></script>
-  <script src="scripts/bootstrap-material-design.js"></script>
-  <script>
-    $("body").bootstrapMaterialDesign();
-  </script>
-  <script src="/__/firebase/7.18.0/firebase-app.js"></script>
-  <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
-  <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
-  <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
-  <script src="/__/firebase/init.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
-  <!-- <script src="scripts/rosefire.min.js"></script> -->
-  <!-- you need to implement this first -->
-  <script src="scripts/main.js"></script>
+
+
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/popper.js"></script>
+    <script src="scripts/bootstrap-material-design.js"></script>
+    <script>
+      $("body").bootstrapMaterialDesign();
+    </script>
+    <script src="/__/firebase/7.18.0/firebase-app.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
+    <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
+    <script src="/__/firebase/init.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+    <!-- <script src="scripts/rosefire.min.js"></script> -->
+    <!-- you need to implement this first -->
+    <script src="scripts/main.js"></script>
 
 </body>
 

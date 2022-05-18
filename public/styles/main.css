@@ -97,3 +97,12 @@ hr{
         display: none;
     }
 }
+
+*/
+
+#PostContents{
+    margin: auto auto;  
+}
+.card{
+    margin: 10px auto;
+}
