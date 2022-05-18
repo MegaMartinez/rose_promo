@@ -26,26 +26,27 @@
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item active">  
+          <li class="nav-item active">
             <a class="nav-link" href="/#">Home <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/PopularPostPage.html">Popoular Posts</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/recentPostPage.html">Recent Posts</a>
-          </li>
-          
-
-
           <!-- only shown if logged in -->
           <li class="nav-item showWhenLoggedIn">
-            <a class="nav-link" href="#">Following Posts</a>
+            <a class="nav-link" href="/followingPostPage.html">Following Posts</a>
           </li>
           <li class="nav-item showWhenLoggedIn">
-            <a class="nav-link" href="#">My posts</a>
+            <a class="nav-link" href="/MyPostPage.html">My posts</a>
           </li>
           <!-- //only shown if logged in -->
+
+        </ul>
+
+
+        <ul class="navbar-nav ml-auto">
+          <!-- do not show this when logged in -->
+          <li class="nav-item">
+            <a id="signInNavItem" class="nav-link" href="/SigninPage.html">Sign-in</a>
+          </li>
+          <!-- //do not show this when logged in -->
 
         </ul>
 
@@ -73,10 +74,11 @@
   <!-- Page title -->
   <div class="container">
     <div id="pageHeader" class="page-header">
-      <h1 id="pageHeaderText">Popular Posts</div>
-      <hr>
+      <h1 id="pageHeaderText">Popular Posts
     </div>
-    <!-- <p>description goes here if needed</p> -->
+    <hr>
+  </div>
+  <!-- <p>description goes here if needed</p> -->
   </div>
   <!-- //Page title -->
 
@@ -99,7 +101,8 @@
 
   <!-- add button button right -->
   <!-- Only shows when logged in -->
-  <button id="fab" type="button" class="btn  bmd-btn-fab showWhenLoggedIn" data-toggle="modal" data-target="#addNewPicture">
+  <button id="fab" type="button" class="btn  bmd-btn-fab showWhenLoggedIn" data-toggle="modal"
+    data-target="#addNewPicture">
     <i class="material-icons">add</i>
   </button>
 

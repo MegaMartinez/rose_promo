@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <!-- navigation bar  -->  
+  <!-- navigation bar  -->
   <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay">
 
     <nav class="navbar navbar-expand-lg">
@@ -35,24 +35,26 @@
           <li class="nav-item">
             <a class="nav-link" href="/recentPostPage.html">Recent Posts</a>
           </li>
- <!-- only shown if logged in -->
- <li class="nav-item showWhenLoggedIn">
-  <a class="nav-link" href="/followingPostPage.html">Following Posts</a>
-</li>
-<li class="nav-item showWhenLoggedIn">
-  <a class="nav-link" href="/MyPostPage.html">My posts</a>
-</li>
-<!-- //only shown if logged in -->
-
-</ul>
 
 
-<ul class="navbar-nav ml-auto">
-<!-- do not show this when logged in -->
-<li class="nav-item">
-  <a id="signInNavItem" class="nav-link" href="/SigninPage.html">Sign-in</a>
-</li>
-<!-- //do not show this when logged in -->
+          <!-- only shown if logged in -->
+          <li class="nav-item showWhenLoggedIn">
+            <a class="nav-link" href="/followingPostPage.html">Following Posts</a>
+          </li>
+          <li class="nav-item showWhenLoggedIn">
+            <a class="nav-link" href="/MyPostPage.html">My posts</a>
+          </li>
+          <!-- //only shown if logged in -->
+
+        </ul>
+
+
+        <ul class="navbar-nav ml-auto">
+          <!-- do not show this when logged in -->
+          <li class="nav-item">
+            <a id="signInNavItem" class="nav-link" href="/SigninPage.html">Sign-in</a>
+          </li>
+          <!-- //do not show this when logged in -->
 
           <form class="form-inline my-2 my-lg-0">
             <input id="searchBar" class="form" type="search" placeholder="Search">
@@ -67,27 +69,12 @@
   <!-- //navigation bar  -->
 
 
-  <!-- Page title -->  
+  <!-- Page title -->
   <div class="container">
     <div id="pageHeader" class="page-header">
-      <div id="pageHeaderText" class="display-inline-block">Following Posts</div>
+      <div id="pageHeaderText" class="display-inline-block">Recommended Posts</div>
 
-      <!-- drop down selection menu -->
-      <div id="dropDownSortingSelection" class="dropdown display-inline-block">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          Sort
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <button class="dropdown-item" type="button">Popularity: acceding</button>
-          <button class="dropdown-item" type="button">Popularity: deccending</button>
-          <button class="dropdown-item" type="button">Likes: acceding</button>
-          <button class="dropdown-item" type="button">Likes: deccending</button>
-          <button class="dropdown-item" type="button">Views: acceding</button>
-          <button class="dropdown-item" type="button">Views: deccending</button>
-        </div>
-      </div>
-      <!-- //drop down selection menu -->
+      
       <hr>
     </div>
     <!-- <p>description goes here if needed</p> -->
