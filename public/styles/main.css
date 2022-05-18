@@ -113,3 +113,12 @@ hr{
 #viewCountOnDetailPage{
     text-align: right   ;
 }
+#roseFireButton {
+    display: block;
+    margin: 30px auto;
+    color: white;
+    background: #800000;
+    font-size: 1.1em;
+    padding: 10px 30px;
+    border-radius: 5px;
+}
