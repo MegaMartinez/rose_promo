@@ -83,8 +83,8 @@
         <div class="ripple-container"></div></button>
         <div class="dropdown-menu dropdown-menu-right show" aria-labelledby="lr1">
   
-          <button class="dropdown-item" type="button" data-toggle="modal" data-target="#editPicDialog"><i class="material-icons">edit</i>&nbsp;&nbsp;&nbsp;Edit</button>
-          <button class="dropdown-item" type="button" data-toggle="modal" data-target="#deleteQuoteDialog"><i class="material-icons">delete</i>&nbsp;&nbsp;&nbsp;Delete</button>
+          <button id="editButton" class="dropdown-item" type="button" data-toggle="modal" data-target="#editQuoteDialog"><i class="material-icons">edit</i>&nbsp;&nbsp;&nbsp;Edit</button>
+          <button id="deleteButton" class="dropdown-item" type="button"><i class="material-icons">delete</i>&nbsp;&nbsp;&nbsp;Delete</button>
         </div>
       </div>
 
@@ -106,17 +106,42 @@
         <p class="card-text"><small class="text-muted">
           <a href="link for tagged posts goes here" tabindex="0">#tag1</a>
           <a href="link for tagged posts goes here" tabindex="0">#tag2</a>
-
         </small></p>
         
         <br>
         <p class="card-text">full detail goes here</p>
-       
-      </div>
+      </div> 
+    </div>
 
     <!-- //posts goes here -->
 
   </div>
+
+  <div id="replyBox" class="container">
+    <div class="card">
+      <div class="card-body" style="padding-top: 0; padding-bottom: 10px;">
+        <form style="margin-bottom: 0;">
+          <div class="form-group">
+            <label for="replyTextArea" class="bmd-label-floating">Reply</label>
+            <textarea class="form-control" id="replyTextArea" rows="3"></textarea>
+          </div>
+        </form>
+        <button type="submit" class="btn btn-primary" id="replySubmit">Submit</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="replies" class="container">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-text" style="margin-bottom: 4px;">author here</h6>
+        <a class="card-text">content here</a>
+        <p class="card-text"><small class="text-muted">timestamp here</small></p>
+      </div>
+    </div>
+  </div>
+
   <!-- </main> -->
 
 
