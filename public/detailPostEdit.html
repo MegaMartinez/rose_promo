@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons">
+  <link rel="stylesheet" href="styles/bootstrap-material-design.min.css">
+  <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+  <link rel="stylesheet" href="styles/main.css">
+  <title> &nbsp;&nbsp; Rose promo!</title>
+</head>
+
+<body>
+  <!-- navigation bar  -->
+  <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay">
+
+    <nav class="navbar navbar-expand-lg">
+      <a class="navbar-brand" href="#">
+        <img id="favIcon" src="favicon.ico" width="30" height="30" class="d-inline-block align-top" alt="">&nbsp;
+        Rose-Promo!</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+        aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span id="navbarToggleIcon" class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Popoular Posts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Recent Posts</a>
+          </li>
+
+
+          <!-- only shown if logged in -->
+          <li class="nav-item showWhenLoggedIn">
+            <a class="nav-link" href="#">Following Posts</a>
+          </li>
+          <li class="nav-item showWhenLoggedIn">
+            <a class="nav-link" href="#">My posts</a>
+          </li>
+          <!-- //only shown if logged in -->
+
+        </ul>
+
+
+        <ul class="navbar-nav ml-auto">
+          <!-- do not show this when logged in -->
+          <li class="nav-item">
+            <a id="signInNavItem" class="nav-link" href="#">Sign-in</a>
+          </li>
+          <!-- //do not show this when logged in -->
+
+          <form class="form-inline my-2 my-lg-0">
+            <input id="searchBar" class="form" type="search" placeholder="Search">
+            <button id="searchBtn" class="btn " type="submit">Search</button>
+          </form>
+        </ul>
+
+
+      </div>
+    </nav>
+  </div>
+  <!-- //navigation bar  -->
+
+
+  <!-- Page title -->
+  <div class="container">
+    <div id="pageHeader" class="page-header">
+      <hr>
+      <div id="pageHeaderText" class="display-inline-block">Edit the Post</div>
+
+      <hr>
+    </div>
+    <!-- <p>description goes here if needed</p> -->
+  </div>
+  <!-- //Page title -->
+
+
+
+
+  <!-- //post create/edit -->
+  <div id="PostContents" class="container page-container">
+    <form>
+      <div class="form-group">
+        <label for="exampleFormControlInput1">Title</label>
+        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Put your Title here">
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlTextarea1">Tags</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="1"
+          placeholder="Tag the post: #tag #tagSample"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="exampleFormControlTextarea1">Detail</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="20"
+          placeholder="Put detials here"></textarea>
+      </div>
+
+    </form>
+    <!-- //post create/edit -->
+
+    <a class="btn" style="float:right" href="Link to the detail page of this post"><span > submit </span>❯</a>
+  </div>
+  <!-- </main> -->
+
+
+  
+
+
+
+  <!-- Only shows when logged in -->
+  <button id="fab" type="button" class="btn  bmd-btn-fab showWhenLoggedIn" data-toggle="modal"
+    data-target="#addNewPicture">
+    <i class="material-icons">add</i>
+  </button>
+
+  <!-- //add button button right -->
+
+
+
+
+
+
+
+
+  <script src="scripts/jquery.min.js"></script>
+  <script src="scripts/popper.js"></script>
+  <script src="scripts/bootstrap-material-design.js"></script>
+  <script>
+    $("body").bootstrapMaterialDesign();
+  </script>
+  <script src="/__/firebase/7.18.0/firebase-app.js"></script>
+  <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
+  <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
+  <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
+  <script src="/__/firebase/init.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+  <!-- <script src="scripts/rosefire.min.js"></script> -->
+  <!-- you need to implement this first -->
+  <script src="scripts/main.js"></script>
+
+</body>
+
+</html>
