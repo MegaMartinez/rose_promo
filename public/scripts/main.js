@@ -106,9 +106,13 @@ rhit.QueryMachine = class {
 
 function createPreviewCard(post) {
 	var template = document.createElement("template");
+	var tagshtml = ``;
+	for(let i = 0; i < post.tags.length; i++){
+		tagshtml += `<a href="searchPage/?id=${post.tags[i]}" tabindex="0">#${post.tags[i]}</a>`;
+	}
 	var html = 
 	`<div class="col-lg-6 col-sm-12">
-		<a href="detailPost/?id=${post.id}">
+		<a href="detailPostPage/?id=${post.id}">
 			<div class="card">
 				<div class="card-body"> 
 					<h5 class="card-title">${post.title}</h5>
@@ -116,8 +120,7 @@ function createPreviewCard(post) {
 					<p class="card-text"><small class="text-muted">${post.timestamp} / ${post.views} / ${post.likes}</small></p>
 					
 					<p class="card-text"><small class="text-muted">
-                    	<a href="link for tagged posts goes here" tabindex="0">#tag1</a>
-                    	<a href="link for tagged posts goes here" tabindex="0">#tag2</a>
+						${tagshtml}
                 	</small></p>
 
 				</div>
@@ -132,6 +135,10 @@ function createPreviewCard(post) {
 
 function createFullCard(post) {
 	var template = document.createElement("template");
+	var tagshtml = ``;
+	for(let i = 0; i < post.tags.length; i++){
+		tagshtml += `<a href="searchPage/?id=${post.tags[i]}" tabindex="0">#${post.tags[i]}</a>`;
+	}
 	var html = 
 	`<div class="card">
 		<div class="card-body"> 
@@ -141,8 +148,7 @@ function createFullCard(post) {
 
 			<!-- put link to "link for tagged posts goes here" -->
 			<p class="card-text"><small class="text-muted">
-				<a href="link for tagged posts goes here" tabindex="0">#tag1</a>
-				<a href="link for tagged posts goes here" tabindex="0">#tag2</a>
+				${tagshtml}
 			</small></p>
 			
 			<br>
@@ -276,6 +282,19 @@ rhit.detailPage = class {
 		}
 	}
 }
+
+// SEARCH RESULTS PAGE CLASS
+
+rhit.searchPage = class {
+
+}
+
+// SIGNINPAGE CLASS
+
+rhit.signinPage = class {
+
+}
+
 
 // HOME PAGE CLASS
 
