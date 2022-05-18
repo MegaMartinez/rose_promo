@@ -106,6 +106,9 @@ hr{
 .card{
     margin: 10px auto;
 }
+.card-text{
+    margin: auto;
+}
 
 #viewCountOnDetailPage{
     text-align: right   ;
