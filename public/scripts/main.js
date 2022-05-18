@@ -352,7 +352,11 @@ rhit.searchPage = class {
 // SIGNINPAGE CLASS
 
 rhit.signinPage = class {
-
+	constructor(){
+		document.querySelector("#roseFireButton").addEventListener("click", (event) => {
+			authentication.signIn();
+		});
+	}
 }
 
 
@@ -379,7 +383,7 @@ rhit.main = function () {
 	} else if(window.location.href.includes("detailPostPage.html")){
 		currentPage = new rhit.detailPage();
 	} else if(window.location.href.includes("signInPage.html")){
-		
+		currentPage = new rhit.signinPage();
 	}
 
 
