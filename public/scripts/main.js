@@ -84,18 +84,23 @@ rhit.QueryMachine = class {
 	}
 
 	getPost(postId) {
-		this.posts.where("id", "==", postId).get().then((doc) => {
+		return this.posts.doc(postId).get().then((doc) => {
+			console.log(doc);
+			console.log(doc.data());
+			console.log(doc.data().timestamp);
 			if(doc.exists){
-				return new rhit.post(doc.id, doc.title, doc.author, doc.content, doc.likes, doc.replies, doc.views, doc.timestamp, doc.tags);
+				return new rhit.post(doc.data().id, doc.data().title, doc.data().author, doc.data().content, doc.data().likes, doc.data().replies, doc.data().views, doc.data().timestamp.toDate(), doc.data().tags);
+			} else {
+				return false;
 			}
 		});
 	}
 
 	getReplies(postId) {
-		this.replies.orderBy("timestamp", "desc").where("subpost", "==", postId).get().then((docResults) => {
+		return this.replies.where("subpost", "==", postId).orderBy("timestamp", "desc").get().then((docResults) => {
 			var replies = [];
-			docResults.foreach((doc) => {
-				replies.push(new rhit.reply(doc.subpost, doc.author, doc.content, doc.timestamp));
+			docResults.forEach((doc) => {
+				replies.push(new rhit.reply(doc.data().subpost, doc.data().author, doc.data().content, doc.data().timestamp.toDate()));
 			});
 			return replies;
 		});
@@ -108,11 +113,11 @@ function createPreviewCard(post) {
 	var template = document.createElement("template");
 	var tagshtml = ``;
 	for(let i = 0; i < post.tags.length; i++){
-		tagshtml += `<a href="searchPage/?id=${post.tags[i]}" tabindex="0">#${post.tags[i]}</a>`;
+		tagshtml += `<a href="searchPage.html?id=${post.tags[i]}" tabindex="0">#${post.tags[i]}</a>`;
 	}
 	var html = 
 	`<div class="col-lg-6 col-sm-12">
-		<a href="detailPostPage/?id=${post.id}">
+		<a href="detailPostPage.html?id=${post.id}">
 			<div class="card">
 				<div class="card-body"> 
 					<h5 class="card-title">${post.title}</h5>
@@ -137,13 +142,13 @@ function createFullCard(post) {
 	var template = document.createElement("template");
 	var tagshtml = ``;
 	for(let i = 0; i < post.tags.length; i++){
-		tagshtml += `<a href="searchPage/?id=${post.tags[i]}" tabindex="0">#${post.tags[i]}</a>`;
+		tagshtml += `<a href="searchPage.html?id=${post.tags[i]}" tabindex="0">#${post.tags[i]}</a>`;
 	}
 	var html = 
 	`<div class="card">
 		<div class="card-body"> 
 			<h5 class="card-title">${post.title}</h5>
-			<p class="card-text"><small class="text-muted">${post.timestamp} / ${post.views} / ${post.likes}
+			<p class="card-text"><small class="text-muted">${post.timestamp} / ${post.views} Views / ${post.likes} Likes
 			</small></p>
 
 			<!-- put link to "link for tagged posts goes here" -->
@@ -242,9 +247,6 @@ rhit.detailPage = class {
 		const queryString = window.location.search;
 		const urlParams = new URLSearchParams(queryString);
 		this.postId = urlParams.get("id");
-		this.post = queryMachine.getPost(this.postId);
-		this.replies = queryMachine.getReplies(this.postId);
-
 
 		// REMOVE && FALSE LATER
 
@@ -253,8 +255,8 @@ rhit.detailPage = class {
 		}
 
 		document.querySelector("#replySubmit").addEventListener("click", (event) => {
-			if(document.querySelector("#replyTextArea").innerHTML.trim()){
-				const reply = new rhit.reply(this.postId, authentication.name, document.querySelector("#replyTextArea").innerHTML, firebase.firestore.Timestamp.now());
+			if(document.querySelector("#replyTextArea").value.trim()){
+				const reply = new rhit.reply(this.postId, authentication.name, document.querySelector("#replyTextArea").value, firebase.firestore.Timestamp.now());
 				queryMachine.addReply(reply);
 				this.updateView();
 			}
@@ -262,25 +264,83 @@ rhit.detailPage = class {
 
 		document.querySelector("#deleteButton").addEventListener("click", (event) => {
 			queryMachine.deletePost(this.post.id);
+			window.location.href = "/";
+		});
+
+		this.updateView();
+	}
+
+	updateView() {
+
+		queryMachine.getPost(this.postId).then((post) => {
+			const mainPost = document.querySelector("#PostContents");
+			while(mainPost.lastChild){
+				mainPost.removeChild(mainPost.lastChild);
+			}
+			mainPost.appendChild(createFullCard(post));
+		});
+
+		queryMachine.getReplies(this.postId).then((replies) => {
+			if(replies.length == 0){
+				return;
+			}
+			const replyList = document.querySelector("#replies");
+			while(replyList.lastChild){
+				replyList.removeChild(replyList.lastChild);
+			}
+			for(let i = 0; i < replies.length; i++){
+				replyList.appendChild(createReplyCard(replies[i]));
+			}
+		})
+	}
+}
+
+
+// ADD POST PAGE
+
+rhit.addPostPage = class {
+	constructor(){
+		var title = document.querySelector("#titleInput");
+		var tags = document.querySelector("#tagInput");
+		var content = document.querySelector("#contentInput");
+
+		document.querySelector("#submitButton").addEventListener("click", (event) => {
+			if(!title.value.trim() && !tags.value.trim() && !content.value.trim()){
+				var newPost = new rhit.post(null, title.value, authentication.name, content.value, 0, 0, 0, firebase.firebase.Timestamp.now(), this.markTags(tags.value));
+				queryMachine.addPost(newPost);
+				window.location.href = "/";
+			}
 		});
 
 	}
 
-	updateView() {
-		const mainPost = document.querySelector("#PostContents");
-		while(mainPost.lastChild){
-			mainPost.removeChild(mainPost.lastChild);
-		}
-		mainPost.appendChild(createFullCard(this.post));
+	markTags(tagString){
+		tagString = tagString.replace(/\s/g,"");
 
-		const replyList = document.querySelector("#replies");
-		while(replyList.lastChild){
-			replyList.removeChild(replyList.lastChild);
+		if(!tagString.includes("#")){
+			return;
 		}
-		for(let i = 0; i < this.replies.length; i++){
-			replyList.appendChild(createReplyCard(this.replies[i]));
+
+		while(tagString.includes("##")){
+			tagString = tagString.replace("##", "#");
 		}
+
+		while(tagString.endsWith("#")){
+			tagString = tagString.substring(0, tagString.length - 1);
+		}
+
+		for(let i = 0; i < tagString.length; i++){
+			if(tagString.charAt(i) == "#"){
+				tagString = tagString.slice(i);
+				break;
+			}
+		}
+
+		var tags = tagString.split("#");
+		return tags;
+		
 	}
+
 }
 
 // SEARCH RESULTS PAGE CLASS
@@ -310,6 +370,17 @@ rhit.main = function () {
 	console.log("Ready");
 	queryMachine = new rhit.QueryMachine();
 	authentication = new rhit.Authentication();
+	var currentPage = null;
+	
+	if(false){
+
+	} else if(window.location.href.includes("addPost.html")){
+		currentPage = new rhit.addPostPage();
+	} else if(window.location.href.includes("detailPostPage.html")){
+		currentPage = new rhit.detailPage();
+	} else if(window.location.href.includes("signInPage.html")){
+		
+	}
 
 
 };
