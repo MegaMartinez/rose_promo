@@ -71,8 +71,19 @@
     <div id="pageHeader" class="page-header">
       <hr>
       <div id="pageHeaderText" class="display-inline-block">Detail post Page</div>
-      <div class="ml-auto display-inline-block"> views: count goes here</div>
 
+
+
+      <div class="dropdown pull-xs-right show display-inline-block float-right">
+        <button class="btn bmd-btn-icon dropdown-toggle" type="button" id="lr1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <i class="material-icons">more_vert</i>
+        <div class="ripple-container"></div></button>
+        <div class="dropdown-menu dropdown-menu-right show" aria-labelledby="lr1">
+  
+          <button class="dropdown-item" type="button" data-toggle="modal" data-target="#editPicDialog"><i class="material-icons">edit</i>&nbsp;&nbsp;&nbsp;Edit</button>
+          <button class="dropdown-item" type="button" data-toggle="modal" data-target="#deleteQuoteDialog"><i class="material-icons">delete</i>&nbsp;&nbsp;&nbsp;Delete</button>
+        </div>
+      </div>
 
       <hr>
     </div>
@@ -86,9 +97,10 @@
     <div class="card">
       <div class="card-body"> 
         <h5 class="card-title">Title fo Post</h5>
-        <p class="card-text">full detail goes here</p>
         <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
-          </small></p>
+        </small></p>
+        <p class="card-text">full detail goes here</p>
+       
       </div>
 
     <!-- //posts goes here -->
