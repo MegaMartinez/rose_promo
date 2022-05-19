@@ -51,6 +51,11 @@ rhit.currentUserTemp = class {
 			currentPage.updateView();
 		}
 
+		document.querySelector("#signInNavItem").innerHTML = "Sign-Out";
+		document.querySelector("#signInNavItem").addEventListener("click", (event) => {
+			authentication.signOut();
+		});
+
 	}
 }
 
@@ -260,8 +265,8 @@ rhit.Authentication = class {
 	}
 
 	signOut() {
-		firebase.auth().signOut().catch((error) => {
-			console.log("error signing out: ", error);
+		firebase.auth().signOut().then(() => {
+			window.location.href = "/";
 		});
 	}
 
