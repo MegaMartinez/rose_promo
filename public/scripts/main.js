@@ -61,6 +61,9 @@ rhit.currentUserTemp = class {
 			authentication.signOut();
 		});
 
+		document.querySelector("#recNav").style.display = "block";
+		document.querySelector("#bookNav").style.display = "block";
+
 	}
 }
 
