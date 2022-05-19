@@ -92,7 +92,7 @@ rhit.QueryMachine = class {
 			"timestamp": post.timestamp,
 			"tags": post.tags
 		}).then((doc) => {
-			window.location.href = `detailPostPage.html?id=${doc.id}`;
+			window.location.href = `/detailPostPage.html?id=${doc.id}`;
 		});
 	}
 
@@ -106,7 +106,9 @@ rhit.QueryMachine = class {
 			"views": post.views,
 			"timestamp": post.timestamp,
 			"tags": post.tags
-		});
+		}).then((doc) => {
+			window.location.href = `/detailPostPage.html?id=${post.id}`
+		})
 	}
 
 	deletePost(post) {
@@ -365,7 +367,11 @@ rhit.addPostPage = class {
 				var newPost = new rhit.post(this.postId, title.value, rhit.currentUser.name, content.value, 0, 0, 0, firebase.firestore.Timestamp.now(), this.markTags(tags.value));
 
 				if(this.postId != null){
-					queryMachine.editPost(newPost);
+					if(this.author == rhit.currentUser.name){
+						queryMachine.editPost(newPost);
+					} else {
+						window.location.href = `/detailPostPage.html?id=${this.postId}`
+					}
 				} else {
 					queryMachine.addPost(newPost);
 				}
