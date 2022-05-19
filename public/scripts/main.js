@@ -194,6 +194,8 @@ function createFullCard(post) {
 	for(let i = 0; i < post.tags.length; i++){
 		tagshtml += `<a href="searchPage.html?id=${post.tags[i]}" tabindex="0">#${post.tags[i]}</a>`;
 	}
+
+	//need to add user info. format is "User / time stap goes here/ views goes here / likes goes here,"
 	var html = 
 	`<div class="card">
 		<div class="card-body"> 
