@@ -42,10 +42,13 @@ rhit.reply = class{
 }
 
 rhit.currentUserTemp = class {
-	constructor(uid, email, name){
+	constructor(uid, email, name, viewed, liked, bookmarked){
 		this.uid = uid;
 		this.email = email;
 		this.name = name;
+		this.viewed = viewed;
+		this.liked = liked;
+		this.bookmarked = bookmarked;
 
 		if(window.location.href.includes("detailPostPage.html")){
 			currentPage.updateView();
@@ -63,6 +66,7 @@ rhit.currentUserTemp = class {
 
 		document.querySelector("#recNav").style.display = "block";
 		document.querySelector("#bookNav").style.display = "block";
+		document.querySelector("#fab").style.display = "block";
 
 	}
 }
@@ -77,10 +81,30 @@ rhit.QueryMachine = class {
 	}
 
 	addUserData(rfUser) {
-		this.userData.add({
-			"uid": rfUser.username,
-			"email": rfUser.email,
-			"name": rfUser.name
+		var docCount = 0;
+		this.userData.where("uid", "==", rfUser.username).get().then((docs) => {
+			docs.forEach((doc) => {
+				docCount++;
+			})
+		}).then(() => {
+			if(docCount == 0){
+				this.userData.add({
+					"uid": rfUser.username,
+					"email": rfUser.email,
+					"name": rfUser.name,
+					"bookmarks": [],
+					"liked": [],
+					"viewed": []
+				}).then(() => {
+					this.userData.where("uid", "==", rfUser.username).get().then((docs) => {
+						docs.forEach((doc) => {
+							if(doc.exists){
+								rhit.currentUser = new rhit.currentUserTemp(doc.data().uid, doc.data().email, doc.data().name, doc.data().viewed, doc.data().liked, doc.data().bookmarks);
+							}
+						})
+					});
+				});
+			}
 		});
 	}
 
@@ -88,10 +112,54 @@ rhit.QueryMachine = class {
 		this.userData.where("uid", "==", uid).get().then((docs) => {
 			docs.forEach((doc) => {
 				if(doc.exists){
-					rhit.currentUser = new rhit.currentUserTemp(doc.data().uid, doc.data().email, doc.data().name);
+					rhit.currentUser = new rhit.currentUserTemp(doc.data().uid, doc.data().email, doc.data().name, doc.data().viewed, doc.data().liked, doc.data().bookmarks);
 				}
 			})
 		});
+	}
+
+	addView(postId) {
+		this.getPost(postId).then((post) => {
+			post.views++;
+			this.editPost(post);
+			if(rhit.currentUser){
+				this.userData.where("uid", "==", uid).get().then((docs) => {
+					docs.forEach((doc) => {
+						this.userData.doc(doc.id).update({
+							"viewed": doc.data().viewed.push(postId)
+						});
+					})
+				});
+			}
+		});
+	}
+
+	addLike(postId) {
+		this.getPost(postId).then((post) => {
+			post.likes++;
+			this.editPost(post);
+			if(rhit.currentUser){
+				this.userData.where("uid", "==", uid).get().then((docs) => {
+					docs.forEach((doc) => {
+						this.userData.doc(doc.id).update({
+							"liked": doc.data().liked.push(postId)
+						});
+					})
+				});
+			}
+		});
+	}
+
+	addBookMark(postId) {
+		if(rhit.currentUser){
+			this.userData.where("uid", "==", uid).get().then((docs) => {
+				docs.forEach((doc) => {
+					this.userData.doc(doc.id).update({
+						"bookmarked": doc.data().bookmarked.push(postId)
+					});
+				})
+			});
+		}
 	}
 
 	addPost(post) {
