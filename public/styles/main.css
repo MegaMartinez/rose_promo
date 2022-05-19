@@ -107,11 +107,22 @@ hr{
     margin: 10px auto;
 }
 .card-text{
-    margin: auto;
+    margin: 0;
+}
+.card-title{
+    margin-bottom: 0px;
+}
+
+.tag{   
+    margin-bottom: 1em;
 }
 
 #viewCountOnDetailPage{
     text-align: right   ;
+}
+
+.btn{
+    margin: auto auto;
 }
 #roseFireButton {
     display: block;

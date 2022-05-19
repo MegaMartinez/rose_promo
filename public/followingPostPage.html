@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <!-- navigation bar  -->  
+  <!-- navigation bar  -->
   <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay">
 
     <nav class="navbar navbar-expand-lg">
@@ -26,7 +26,7 @@
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item active">  
+          <li class="nav-item active">
             <a class="nav-link" href="/#">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
@@ -35,24 +35,24 @@
           <li class="nav-item">
             <a class="nav-link" href="/recentPostPage.html">Recent Posts</a>
           </li>
- <!-- only shown if logged in -->
- <li class="nav-item showWhenLoggedIn">
-  <a class="nav-link" href="/followingPostPage.html">Following Posts</a>
-</li>
-<li class="nav-item showWhenLoggedIn">
-  <a class="nav-link" href="/MyPostPage.html">My posts</a>
-</li>
-<!-- //only shown if logged in -->
+          <!-- only shown if logged in -->
+          <li class="nav-item showWhenLoggedIn">
+            <a class="nav-link" href="/followingPostPage.html">Following Posts</a>
+          </li>
+          <li class="nav-item showWhenLoggedIn">
+            <a class="nav-link" href="/MyPostPage.html">My posts</a>
+          </li>
+          <!-- //only shown if logged in -->
 
-</ul>
+        </ul>
 
 
-<ul class="navbar-nav ml-auto">
-<!-- do not show this when logged in -->
-<li class="nav-item">
-  <a id="signInNavItem" class="nav-link" href="/SigninPage.html">Sign-in</a>
-</li>
-<!-- //do not show this when logged in -->
+        <ul class="navbar-nav ml-auto">
+          <!-- do not show this when logged in -->
+          <li class="nav-item">
+            <a id="signInNavItem" class="nav-link" href="/SigninPage.html">Sign-in</a>
+          </li>
+          <!-- //do not show this when logged in -->
 
           <form class="form-inline my-2 my-lg-0">
             <input id="searchBar" class="form" type="search" placeholder="Search">
@@ -67,7 +67,7 @@
   <!-- //navigation bar  -->
 
 
-  <!-- Page title -->  
+  <!-- Page title -->
   <div class="container">
     <div id="pageHeader" class="page-header">
       <div id="pageHeaderText" class="display-inline-block">Following Posts</div>
@@ -102,111 +102,59 @@
       <!-- posts goes here -->
 
       <div class="row">
-        <div class="col-lg-6 col-sm-12">
-
-          <a href="Link to detial Post">
-            <div class="card">
-              <div class="card-body"> 
-                <h5 class="card-title">Title of Post goes here</h5>
-                <p class="card-text">detail goes here</p>
-                <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
-                  </small></p>
-                  <p class="card-text"><small class="text-muted">
-                    <a href="link for tagged posts goes here" tabindex="0">#tag1</a>
-                    <a href="link for tagged posts goes here" tabindex="0">#tag2</a>
-          
-                  </small></p>
-              </div>
-            </div>
-          </a>
-
-        </div>
-        <div class="col-lg-6 col-sm-12">
-
-          <a href="Link to detial Post">
-            <div class="card">
-              <div class="card-body"> 
-                <h5 class="card-title">Title of Post goes here</h5>
-                <p class="card-text">detail goes here</p>
-                <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
-                  </small></p>
-                  <p class="card-text"><small class="text-muted">
-                    <a href="link for tagged posts goes here" tabindex="0">#tag1</a>
-                    <a href="link for tagged posts goes here" tabindex="0">#tag2</a>
-          
-                  </small></p>
-              </div>
-            </div>
-          </a>
-
-        </div>
-        <!-- Force next columns to break to new line -->
-        <div class="w-100"></div>
-
         
-          <div class="col-lg-6 col-sm-12">
-  
-            <a href="Link to detial Post">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Title of Post goes here</h5>
-                  <p class="card-text">detail goes here</p>
-                  <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
-                    </small></p>
-                </div>
+        <div class="col-lg-6 col-sm-12">
+          <a href="Link to detial Post">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Title of Post goes here</h5>
+                <p class="card-text display-inline-block"><small class="text-muted">CreaterOfPost / time stap goes here
+                    / views goes here / likes goes here,
+                  </small></p>
+                <p class="card-text tag"><small class="text-muted">
+                    <a href="link for tagged posts goes here" tabindex="0">#tag1</a>
+                    <a href="link for tagged posts goes here" tabindex="0">#tag2</a>
+                  </small></p>
+                <p class="card-text">detail goes here</p>
               </div>
-            </a>
-  
+            </div>
+          </a>
+        </div>
+
+        <!-- //posts goes here -->
+
+      </div>
+      <!-- </main> -->
+
+      <!-- add button button right -->
+      <!-- Only shows when logged in -->
+
+      <button id="fab" type="button" class="btn  bmd-btn-fab showWhenLoggedIn" data-toggle="modal"
+        data-target="#askAddNewPost">
+        <i class="material-icons">add</i>
+      </button>
+      <!-- Modal -->
+      <div class="modal fade" id="askAddNewPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Are you creating a new Post?</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Create A New Post?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <a href='/addPost.html'><button type="button" class="btn btn-primary">Yes</button></a>
+            </div>
           </div>
-  
-          <div class="col-lg-6 col-sm-12">
-            <a href="Link to detial Post">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Title of Post goes here</h5>
-                  <p class="card-text">detail goes here</p>
-                  <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
-                    </small></p>
-                </div>
-              </div>
-            </a>
-          </div>  
-      
-
-
-      <!-- //posts goes here -->
-
-    </div>
-    <!-- </main> -->
-
- <!-- add button button right -->
-    <!-- Only shows when logged in -->
-    
-    <button id="fab" type="button" class="btn  bmd-btn-fab showWhenLoggedIn" data-toggle="modal"
-    data-target="#askAddNewPost">
-    <i class="material-icons" >add</i>
-  </button>
-<!-- Modal -->
-<div class="modal fade" id="askAddNewPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-  <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Are you creating a new Post?</h5>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-        Create A New Post?
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-    <a href='/addPost.html'><button type="button" class="btn btn-primary">Yes</button></a>
-  </div>
-</div>
-</div>
-</div>
-<!-- //add button button right -->
+        </div>
+      </div>
+      <!-- //add button button right -->
 
 
 
@@ -216,22 +164,22 @@
 
 
 
-    <script src="scripts/jquery.min.js"></script>
-    <script src="scripts/popper.js"></script>
-    <script src="scripts/bootstrap-material-design.js"></script>
-    <script>
-      $("body").bootstrapMaterialDesign();
-    </script>
-    <script src="/__/firebase/7.18.0/firebase-app.js"></script>
-    <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
-    <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
-    <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
-    <script src="/__/firebase/init.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
-    <!-- <script src="scripts/rosefire.min.js"></script> -->
-    <!-- you need to implement this first -->
-    <script src="scripts/rosefire.min.js"></script>
-  <script src="scripts/main.js"></script>
+      <script src="scripts/jquery.min.js"></script>
+      <script src="scripts/popper.js"></script>
+      <script src="scripts/bootstrap-material-design.js"></script>
+      <script>
+        $("body").bootstrapMaterialDesign();
+      </script>
+      <script src="/__/firebase/7.18.0/firebase-app.js"></script>
+      <script src="/__/firebase/7.18.0/firebase-analytics.js"></script>
+      <script src="/__/firebase/7.18.0/firebase-auth.js"></script>
+      <script src="/__/firebase/7.18.0/firebase-firestore.js"></script>
+      <script src="/__/firebase/init.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+      <!-- <script src="scripts/rosefire.min.js"></script> -->
+      <!-- you need to implement this first -->
+      <script src="scripts/rosefire.min.js"></script>
+      <script src="scripts/main.js"></script>
 
 </body>
 

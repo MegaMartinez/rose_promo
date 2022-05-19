@@ -12,7 +12,7 @@
 </head>
 
 <body>
-  <!-- navigation bar  -->  
+  <!-- navigation bar  -->
   <div class="bmd-layout-container bmd-drawer-f-l bmd-drawer-overlay">
 
     <nav class="navbar navbar-expand-lg">
@@ -26,7 +26,7 @@
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item active">  
+          <li class="nav-item active">
             <a class="nav-link" href="/#">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
@@ -36,8 +36,8 @@
             <a class="nav-link" href="/recentPostPage.html">Recent Posts</a>
           </li>
 
-           <!-- only shown if logged in -->
-           <li class="nav-item showWhenLoggedIn">
+          <!-- only shown if logged in -->
+          <li class="nav-item showWhenLoggedIn">
             <a class="nav-link" href="/followingPostPage.html">Following Posts</a>
           </li>
           <li class="nav-item showWhenLoggedIn">
@@ -54,7 +54,7 @@
             <a id="signInNavItem" class="nav-link" href="/SigninPage.html">Sign-in</a>
           </li>
           <!-- //do not show this when logged in -->
-          
+
           <form class="form-inline my-2 my-lg-0">
             <input id="searchBar" class="form" type="search" placeholder="Search">
             <button id="searchBtn" class="btn " type="submit">Search</button>
@@ -103,112 +103,80 @@
       <!-- posts goes here -->
 
       <div class="row">
-        <div class="col-lg-6 col-sm-12">
 
+        <div class="col-lg-6 col-sm-12">
           <a href="Link to detial Post">
             <div class="card">
-              <div class="card-body"> 
+              <div class="card-body">
                 <h5 class="card-title">Title of Post goes here</h5>
-                <p class="card-text">detail goes here</p>
-                <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
+                <p class="card-text display-inline-block"><small class="text-muted">CreaterOfPost / time stap goes here
+                    / views goes here / likes goes here,
                   </small></p>
-                  <p class="card-text"><small class="text-muted">
+                <p class="card-text tag"><small class="text-muted">
                     <a href="link for tagged posts goes here" tabindex="0">#tag1</a>
                     <a href="link for tagged posts goes here" tabindex="0">#tag2</a>
-          
                   </small></p>
+                <p class="card-text">detail goes here</p>
               </div>
             </div>
           </a>
-
         </div>
-        <div class="col-lg-6 col-sm-12">
 
+        <div class="col-lg-6 col-sm-12">
           <a href="Link to detial Post">
             <div class="card">
-              <div class="card-body"> 
+              <div class="card-body">
                 <h5 class="card-title">Title of Post goes here</h5>
-                <p class="card-text">detail goes here</p>
-                <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
+                <p class="card-text display-inline-block"><small class="text-muted">CreaterOfPost / time stap goes here
+                    / views goes here / likes goes here,
                   </small></p>
-                  <p class="card-text"><small class="text-muted">
+                <p class="card-text tag"><small class="text-muted">
                     <a href="link for tagged posts goes here" tabindex="0">#tag1</a>
                     <a href="link for tagged posts goes here" tabindex="0">#tag2</a>
-          
                   </small></p>
+                <p class="card-text">detail goes here</p>
               </div>
             </div>
           </a>
-
         </div>
-        <!-- Force next columns to break to new line -->
-        <div class="w-100"></div>
-
-        
-          <div class="col-lg-6 col-sm-12">
-  
-            <a href="Link to detial Post">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Title of Post goes here</h5>
-                  <p class="card-text">detail goes here</p>
-                  <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
-                    </small></p>
-                </div>
-              </div>
-            </a>
-  
-          </div>
-  
-          <div class="col-lg-6 col-sm-12">
-            <a href="Link to detial Post">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title">Title of Post goes here</h5>
-                  <p class="card-text">detail goes here</p>
-                  <p class="card-text"><small class="text-muted">time stap goes here / views goes here / likes goes here,
-                    </small></p>
-                </div>
-              </div>
-            </a>
-          </div>  
-      
 
 
+      </div>
       <!-- //posts goes here -->
 
     </div>
     <!-- </main> -->
 
- <!-- add button button right -->
+    <!-- add button button right -->
     <!-- Only shows when logged in -->
-    
-    <button id="fab" type="button" class="btn  bmd-btn-fab showWhenLoggedIn" data-toggle="modal"
-    data-target="#askAddNewPost">
-    <i class="material-icons" >add</i>
-  </button>
-<!-- Modal -->
 
-<div class="modal fade" id="askAddNewPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog" role="document">
-<div class="modal-content">
-  <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLabel">Are you creating a new Post?</h5>
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
+    <button id="fab" type="button" class="btn  bmd-btn-fab showWhenLoggedIn" data-toggle="modal"
+      data-target="#askAddNewPost">
+      <i class="material-icons">add</i>
     </button>
-  </div>
-  <div class="modal-body">
-    Click yes if you wish to create a new post.
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-    <a href='/addPost.html'><button type="button" class="btn btn-primary">Yes</button></a>
-  </div>
-</div>
-</div>
-</div>
-<!-- //add button button right -->
+    <!-- Modal -->
+
+    <div class="modal fade" id="askAddNewPost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Are you creating a new Post?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Click yes if you wish to create a new post.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <a href='/addPost.html'><button type="button" class="btn btn-primary">Yes</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- //add button button right -->
 
 
 
