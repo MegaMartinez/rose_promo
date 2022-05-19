@@ -51,6 +51,10 @@ rhit.currentUserTemp = class {
 			currentPage.updateView();
 		}
 
+		if(window.location.href.includes("SigninPage.html")){
+			window.location.href = "/";
+		}
+
 		document.querySelector("#signInNavItem").innerHTML = "Sign-Out";
 		document.querySelector("#signInNavItem").href = "/";
 		document.querySelector("#signInNavItem").addEventListener("click", (event) => {
@@ -444,6 +448,12 @@ rhit.signinPage = class {
 // HOME PAGE CLASS
 
 rhit.homePage = class {
+
+}
+
+// RECOMMENDED PAGE CLASS
+
+rhit.recommendationPage = class {
 
 }
 
