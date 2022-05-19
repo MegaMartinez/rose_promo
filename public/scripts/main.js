@@ -52,6 +52,7 @@ rhit.currentUserTemp = class {
 		}
 
 		document.querySelector("#signInNavItem").innerHTML = "Sign-Out";
+		document.querySelector("#signInNavItem").href = "/";
 		document.querySelector("#signInNavItem").addEventListener("click", (event) => {
 			authentication.signOut();
 		});
