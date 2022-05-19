@@ -103,12 +103,26 @@ hr{
 #PostContents{
     margin: auto auto;  
 }
+
+
 .card{
+    height: 170px;
     margin: 10px auto;
+   
 }
+
+
 .card-text{
-    margin: 0;
+    margin: 0;}
+    
+
+.postpreview-text{
+    text-overflow: ellipsis ;
+    overflow: hidden;
+      white-space: nowrap;
 }
+
+
 .card-title{
     margin-bottom: 0px;
 }
