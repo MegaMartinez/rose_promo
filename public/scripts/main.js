@@ -10,6 +10,11 @@ var rhit = rhit || {};
 
 var queryMachine = null;
 var authentication = null;
+var currentPage = null;
+
+rhit.currentUser = null;
+
+rhit._user = null;
 
 // CLASS STORAGE FOR POSTS & REPLIES
 
@@ -36,12 +41,44 @@ rhit.reply = class{
 	}
 }
 
+rhit.currentUserTemp = class {
+	constructor(uid, email, name){
+		this.uid = uid;
+		this.email = email;
+		this.name = name;
+
+		if(window.location.href.includes("detailPostPage.html")){
+			currentPage.updateView();
+		}
+
+	}
+}
+
 // QUERY MACHINE
 
 rhit.QueryMachine = class {
 	constructor() {
 		this.posts = firebase.firestore().collection("posts");
 		this.replies = firebase.firestore().collection("replies");
+		this.userData = firebase.firestore().collection("userData");
+	}
+
+	addUserData(rfUser) {
+		this.userData.add({
+			"uid": rfUser.username,
+			"email": rfUser.email,
+			"name": rfUser.name
+		});
+	}
+
+	getUserData(uid) {
+		this.userData.where("uid", "==", uid).get().then((docs) => {
+			docs.forEach((doc) => {
+				if(doc.exists){
+					rhit.currentUser = new rhit.currentUserTemp(doc.data().uid, doc.data().email, doc.data().name);
+				}
+			})
+		});
 	}
 
 	addPost(post) {
@@ -54,6 +91,8 @@ rhit.QueryMachine = class {
 			"views": post.views,
 			"timestamp": post.timestamp,
 			"tags": post.tags
+		}).then((doc) => {
+			window.location.href = `detailPostPage.html?id=${doc.id}`;
 		});
 	}
 
@@ -71,7 +110,9 @@ rhit.QueryMachine = class {
 	}
 
 	deletePost(post) {
-		this.posts.doc(post.id).delete();
+		this.posts.doc(post).delete().then(() => {
+			window.location.href = "/";
+		})
 	}
 
 	addReply(reply) {
@@ -85,9 +126,6 @@ rhit.QueryMachine = class {
 
 	getPost(postId) {
 		return this.posts.doc(postId).get().then((doc) => {
-			console.log(doc);
-			console.log(doc.data());
-			console.log(doc.data().timestamp);
 			if(doc.exists){
 				return new rhit.post(doc.data().id, doc.data().title, doc.data().author, doc.data().content, doc.data().likes, doc.data().replies, doc.data().views, doc.data().timestamp.toDate(), doc.data().tags);
 			} else {
@@ -193,17 +231,20 @@ rhit.Authentication = class {
 		firebase.auth().onAuthStateChanged(function(user) {
 			console.log("user: ", user);
 			this._user = user;
+			rhit._user = user;
+			queryMachine.getUserData(user.uid);
 			changeListener();
 		});
 	}
 
 	signIn() {
-		Rosefire.signIn("543265ba-ed69-42b8-829f-269eab220ee7", (err, rfUser) => {
+		Rosefire.signIn("6858f03f-3829-4ba1-9773-a3d365cb43f7", (err, rfUser) => {
 			if (err) {
 				console.log("Rosefire error!", err);
 				return;
 			}
 			console.log("Rosefire success!", rfUser);
+			queryMachine.addUserData(rfUser);
 			firebase.auth().signInWithCustomToken(rfUser.token).catch(function(error) {
 				const errorCode = error.code;
 				const errorMessage = error.message;
@@ -223,12 +264,7 @@ rhit.Authentication = class {
 	}
 
 	get isSignedIn() {
-		console.log(this._user);
 		return !!this._user;
-	}
-
-	get name() {
-		return this._user.name;
 	}
 
 	get uid() {
@@ -248,23 +284,24 @@ rhit.detailPage = class {
 		const urlParams = new URLSearchParams(queryString);
 		this.postId = urlParams.get("id");
 
-		// REMOVE && FALSE LATER
-
-		if(!authentication.uid && false){
+		if(rhit.currentUser){
 			document.querySelector("#replyBox").style.display = "none";
 		}
 
 		document.querySelector("#replySubmit").addEventListener("click", (event) => {
 			if(document.querySelector("#replyTextArea").value.trim()){
-				const reply = new rhit.reply(this.postId, authentication.name, document.querySelector("#replyTextArea").value, firebase.firestore.Timestamp.now());
+				const reply = new rhit.reply(this.postId, rhit.currentUser.name, document.querySelector("#replyTextArea").value, firebase.firestore.Timestamp.now());
 				queryMachine.addReply(reply);
 				this.updateView();
 			}
 		});
 
+		document.querySelector("#editButton").addEventListener("click", (event) => {
+			window.location.href = `/addPost.html?id=${this.postId}`;
+		});
+
 		document.querySelector("#deleteButton").addEventListener("click", (event) => {
-			queryMachine.deletePost(this.post.id);
-			window.location.href = "/";
+			queryMachine.deletePost(this.postId);
 		});
 
 		this.updateView();
@@ -278,6 +315,9 @@ rhit.detailPage = class {
 				mainPost.removeChild(mainPost.lastChild);
 			}
 			mainPost.appendChild(createFullCard(post));
+			if(post.author == rhit.currentUser.name){
+				document.querySelector("#dropdown").style.display = "block";
+			}
 		});
 
 		queryMachine.getReplies(this.postId).then((replies) => {
@@ -300,15 +340,35 @@ rhit.detailPage = class {
 
 rhit.addPostPage = class {
 	constructor(){
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		this.postId = urlParams.get("id");
+		this.author = null;
+
 		var title = document.querySelector("#titleInput");
 		var tags = document.querySelector("#tagInput");
 		var content = document.querySelector("#contentInput");
 
+		queryMachine.getPost(this.postId).then((post) => {
+			if(post){
+				title.value = post.title;
+				content.value = post.content;
+				post.tags.forEach(tag => {
+					tags.value += `#${tag} `;
+				});
+				this.author = post.author;
+			}
+		});
+
 		document.querySelector("#submitButton").addEventListener("click", (event) => {
-			if(!title.value.trim() && !tags.value.trim() && !content.value.trim()){
-				var newPost = new rhit.post(null, title.value, authentication.name, content.value, 0, 0, 0, firebase.firebase.Timestamp.now(), this.markTags(tags.value));
-				queryMachine.addPost(newPost);
-				window.location.href = "/";
+			if(title.value.trim() && content.value.trim()){
+				var newPost = new rhit.post(this.postId, title.value, rhit.currentUser.name, content.value, 0, 0, 0, firebase.firestore.Timestamp.now(), this.markTags(tags.value));
+
+				if(this.postId != null){
+					queryMachine.editPost(newPost);
+				} else {
+					queryMachine.addPost(newPost);
+				}
 			}
 		});
 
@@ -318,7 +378,7 @@ rhit.addPostPage = class {
 		tagString = tagString.replace(/\s/g,"");
 
 		if(!tagString.includes("#")){
-			return;
+			return [];
 		}
 
 		while(tagString.includes("##")){
@@ -337,6 +397,15 @@ rhit.addPostPage = class {
 		}
 
 		var tags = tagString.split("#");
+
+		for(let i = 0; i < tags.length; i++){
+			if(tags[i] == ""){
+				tags.splice(i, 1);
+			}
+		}
+
+		console.log(tags);
+
 		return tags;
 		
 	}
@@ -374,7 +443,9 @@ rhit.main = function () {
 	console.log("Ready");
 	queryMachine = new rhit.QueryMachine();
 	authentication = new rhit.Authentication();
-	var currentPage = null;
+	authentication.beginListening((_user) => {
+		rhit._user = _user;
+	});
 	
 	if(false){
 
@@ -382,7 +453,7 @@ rhit.main = function () {
 		currentPage = new rhit.addPostPage();
 	} else if(window.location.href.includes("detailPostPage.html")){
 		currentPage = new rhit.detailPage();
-	} else if(window.location.href.includes("signInPage.html")){
+	} else if(window.location.href.includes("SigninPage.html")){
 		currentPage = new rhit.signinPage();
 	}
 
