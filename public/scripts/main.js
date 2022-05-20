@@ -185,11 +185,30 @@ rhit.QueryMachine = class {
 					bookmarked.push(postId);
 
 					this.userData.doc(doc.id).update({
-						"bookmarked": bookmarked
+						"bookmarks": bookmarked
 					});
 				})
 			});
 		}
+	}
+
+	removeBookmark(postId) {
+		if(!document.querySelector("#bookmarks") || !postId){
+			console.log("error");
+			return false;
+		}
+
+		rhit.currentUser.bookmarked.splice(rhit.currentUser.bookmarked.indexOf(postId), 1);
+
+		this.userData.where("uid", "==", rhit.currentUser.uid).get().then((docs) => {
+			docs.forEach((doc) => {
+				this.userData.doc(doc.id).update({
+					"bookmarks": rhit.currentUser.bookmarked
+				}).then(() => {
+					window.location.reload();
+				})
+			});
+		});
 	}
 
 	addPost(post) {
@@ -314,21 +333,30 @@ function createPreviewCard(post) {
 	for(let i = 0; i < post.tags.length; i++){
 		tagshtml += `<a href="searchPage.html?id=${post.tags[i]}" tabindex="0">#${post.tags[i]}</a>`;
 	}
+	var display = "none";
+	if(window.location.href.includes("bookmarkPage.html")){
+		display = "block";
+	}
 	var html = 
 	`<div class="col-lg-6 col-sm-12">
-		<a href="/detailPostPage.html?id=${post.id}">
-			<div class="card">
-				<div class="card-body">
-					<h5 class="card-title">${post.title}</h5>
-					<p class="card-text display-inline-block"><small class="text-muted">${post.author} / ${post.timestamp} / ${post.views} views / ${post.likes} likes
-						</small></p>
-					<p class="card-text tag"><small class="text-muted">
-						${tagshtml}
+		<div class="card">
+			<div class="card-body">
+				<a href="/detailPostPage.html?id=${post.id}">
+					<h5 class="card-title display-inline-block">${post.title}</h5>
+				</a>
+				<button type="button" style="float:right; display: ${display};"  class="btn btn-default btn-sm .display-inline-block deleteBookmarkButton" data-postid="${post.id}">
+					<svg xmlns="http://www.w3.org/2000/svg"  width="16" height="16" fill="currentColor" class="bi bi-x-lg display-inline-block totheright" viewBox="0 0 16 16">
+						<path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+					</svg>
+				</button>
+				<p class="card-text display-inline-block"><small class="text-muted">${post.author} / ${post.timestamp} / ${post.views} views / ${post.likes} likes
 					</small></p>
-					<p class="card-text postpreview-text">${post.content}</p>
-				</div>
+				<p class="card-text tag"><small class="text-muted">
+					${tagshtml}
+				</small></p>
+				<p class="card-text postpreview-text">${post.content}</p>
 			</div>
-		</a>
+		</div>
 	</div>`
 	;	
 	html = html.trim();
@@ -521,7 +549,6 @@ rhit.detailPage = class {
 		})
 	}
 }
-
 
 // ADD POST PAGE
 
@@ -722,7 +749,6 @@ rhit.signinPage = class {
 	}
 }
 
-
 // HOME PAGE CLASS
 
 rhit.homePage = class {
@@ -803,11 +829,28 @@ rhit.recommendationPage = class {
 rhit.bookmarkPage = class {
 	constructor(){}
 	listBookMarks(bookmarks){
+
+		while(document.querySelector("#bookmarks").lastChild){
+			document.querySelector("#bookmarks").removeChild(document.querySelector("#bookmarks").lastChild);
+		}
+
+		var markBtn = null;
+
+		const func = (event) => {
+			queryMachine.removeBookmark(markBtn.dataset.postid);
+		}
+
 		bookmarks.forEach((postId) => {
 			queryMachine.getPost(postId).then((post) => {
 				document.querySelector("#bookmarks").appendChild(createPreviewCard(post));
+			}).then(() => {
+				document.querySelectorAll(".deleteBookmarkButton").forEach((deleteBookmarkButton) => {
+					markBtn = deleteBookmarkButton;
+					deleteBookmarkButton.addEventListener("click", func);
+				});
 			});
 		});
+
 	}
 }
 
@@ -825,7 +868,9 @@ rhit.main = function () {
 
 	if(document.querySelector("#searchBtn")){
 		document.querySelector("#searchBtn").addEventListener("click", (event) => {
-			window.location.href = `/searchPage.html?id=${document.querySelector("#searchBarInputText").value}`
+			if(document.querySelector("#searchBarInputText").value){
+				window.location.href = `/searchPage.html?id=${document.querySelector("#searchBarInputText").value}`
+			}
 		})
 	}
 	
