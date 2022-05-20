@@ -331,7 +331,7 @@ function createPreviewCard(post) {
 	var template = document.createElement("template");
 	var tagshtml = ``;
 	for(let i = 0; i < post.tags.length; i++){
-		tagshtml += `<a href="searchPage.html?id=${post.tags[i]}" tabindex="0">#${post.tags[i]}</a>`;
+		tagshtml += `<a href="searchPage.html?id=${post.tags[i]}" tabindex="0">#${post.tags[i]}&nbsp;</a>`;
 	}
 	var display = "none";
 	if(window.location.href.includes("bookmarkPage.html")){
@@ -368,7 +368,7 @@ function createFullCard(post) {
 	var template = document.createElement("template");
 	var tagshtml = ``;
 	for(let i = 0; i < post.tags.length; i++){
-		tagshtml += `<a href="searchPage.html?id=${post.tags[i]}" tabindex="0">#${post.tags[i]}</a>`;
+		tagshtml += `<a href="searchPage.html?id=${post.tags[i]}" tabindex="0">#${post.tags[i]}&nbsp;</a>`;
 	}
 
 	//need to add user info. format is "User / time stap goes here/ views goes here / likes goes here,"
@@ -820,7 +820,10 @@ rhit.homePage = class {
 // RECOMMENDED PAGE CLASS
 
 rhit.recommendationPage = class {
-
+	constructor(){}
+	listRecommendations(viewed){
+		
+	}
 }
 
 // BOOKMARK PAGE CLASS
