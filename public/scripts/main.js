@@ -63,11 +63,13 @@ rhit.currentUserTemp = class {
 			currentPage.listBookMarks(this.bookmarked);
 		}
 
-		document.querySelector("#signInNavItem").innerHTML = "Sign-Out";
-		document.querySelector("#signInNavItem").href = "/";
-		document.querySelector("#signInNavItem").addEventListener("click", (event) => {
-			authentication.signOut();
-		});
+		if(document.querySelector("#signInNavItem")){
+			document.querySelector("#signInNavItem").innerHTML = "Sign-Out";
+			document.querySelector("#signInNavItem").href = "/";
+			document.querySelector("#signInNavItem").addEventListener("click", (event) => {
+				authentication.signOut();
+			});
+		}
 
 		document.querySelector("#recNav").style.display = "block";
 		document.querySelector("#bookNav").style.display = "block";
