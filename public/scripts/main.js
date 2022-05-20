@@ -289,10 +289,11 @@ rhit.QueryMachine = class {
 		}
 
 		let query = this.posts;
+		query = query.where("tags", "array-contains-any", tags);
 
-		tags.forEach((tag) => {
-			query = query.where("tags", "array-contains", tag);
-		})
+		// tags.forEach((tag) => {
+		// 	query = query.where("tags", "array-contains", tag);
+		// })
 
 		return query.orderBy(instructions[0], instructions[1]).limit(50).get().then((docResults) => {
 			var posts = [];
@@ -609,7 +610,6 @@ rhit.searchPage = class {
 		const queryString = window.location.search;
 		const urlParams = new URLSearchParams(queryString);
 		this.tagQuery = this.markTags(urlParams.get("id"));
-		console.log(this.tagQuery);
 
 		this.selectedSort = "newest";
 
@@ -660,11 +660,11 @@ rhit.searchPage = class {
 		}
 
 		queryMachine.querySearchResults(this.tagQuery, instructions).then((posts) => {
-			while(document.querySelector("#indexResults").lastChild){
-				document.querySelector("#indexResults").removeChild(document.querySelector("#indexResults").lastChild);
+			while(document.querySelector("#searchResults").lastChild){
+				document.querySelector("#searchResults").removeChild(document.querySelector("#searchResults").lastChild);
 			}
 			posts.forEach((post) => {
-				document.querySelector("#indexResults").appendChild(createPreviewCard(post));
+				document.querySelector("#searchResults").appendChild(createPreviewCard(post));
 			})
 		})
 	}
@@ -825,8 +825,7 @@ rhit.main = function () {
 
 	if(document.querySelector("#searchBtn")){
 		document.querySelector("#searchBtn").addEventListener("click", (event) => {
-			console.log("searchInputRead");
-			// window.location.href = `/searchPage.html?id=${document.querySelector("#searchBarInputText").value}`
+			window.location.href = `/searchPage.html?id=${document.querySelector("#searchBarInputText").value}`
 		})
 	}
 	
