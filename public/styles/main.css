@@ -148,3 +148,6 @@ hr{
     padding: 10px 30px;
     border-radius: 5px;
 }
+.totheright{
+    float: right;
+}
