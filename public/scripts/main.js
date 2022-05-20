@@ -59,6 +59,10 @@ rhit.currentUserTemp = class {
 			window.location.href = "/";
 		}
 
+		if(window.location.href.includes("bookmarkPage.html")){
+			currentPage.listBookMarks(this.bookmarked);
+		}
+
 		document.querySelector("#signInNavItem").innerHTML = "Sign-Out";
 		document.querySelector("#signInNavItem").href = "/";
 		document.querySelector("#signInNavItem").addEventListener("click", (event) => {
@@ -236,7 +240,7 @@ rhit.QueryMachine = class {
 	getPost(postId) {
 		return this.posts.doc(postId).get().then((doc) => {
 			if(doc.exists){
-				return new rhit.post(doc.data().id, doc.data().title, doc.data().author, doc.data().content, doc.data().likes, doc.data().replies, doc.data().views, doc.data().timestamp.toDate(), doc.data().tags);
+				return new rhit.post(postId, doc.data().title, doc.data().author, doc.data().content, doc.data().likes, doc.data().replies, doc.data().views, doc.data().timestamp.toDate(), doc.data().tags);
 			} else {
 				return false;
 			}
@@ -252,6 +256,53 @@ rhit.QueryMachine = class {
 			return replies;
 		});
 	}
+
+	queryAllPosts(instructions) {
+		if(instructions[0] != "views" && instructions[0] != "likes" && instructions[0] != "timestamp"){
+			console.log("invalid instructions");
+			return null;
+		}
+
+		if(instructions[1] != "desc" && instructions[1] != "asc"){
+			console.log("invalid instructions");
+			return null;
+		}
+
+		return this.posts.orderBy(instructions[0], instructions[1]).limit(50).get().then((docResults) => {
+			var posts = [];
+			docResults.forEach((doc) => {
+				posts.push(new rhit.post(doc.id, doc.data().title, doc.data().author, doc.data().content, doc.data().likes, doc.data().replies, doc.data().views, doc.data().timestamp.toDate(), doc.data().tags));
+			});
+			return posts;
+		});
+	}
+
+	querySearchResults(tags, instructions) {
+		if(instructions[0] != "views" && instructions[0] != "likes" && instructions[0] != "timestamp"){
+			console.log("invalid instructions");
+			return null;
+		}
+
+		if(instructions[1] != "desc" && instructions[1] != "asc"){
+			console.log("invalid instructions");
+			return null;
+		}
+
+		let query = this.posts;
+
+		tags.forEach((tag) => {
+			query = query.where("tags", "array-contains", tag);
+		})
+
+		return query.orderBy(instructions[0], instructions[1]).limit(50).get().then((docResults) => {
+			var posts = [];
+			docResults.forEach((doc) => {
+				posts.push(new rhit.post(doc.id, doc.data().title, doc.data().author, doc.data().content, doc.data().likes, doc.data().replies, doc.data().views, doc.data().timestamp.toDate(), doc.data().tags));
+			});
+			return posts;
+		});
+	}
+
 }
 
 // HTML CARD CREATION FUNCTIONS
@@ -554,7 +605,111 @@ rhit.addPostPage = class {
 // SEARCH RESULTS PAGE CLASS
 
 rhit.searchPage = class {
+	constructor() {
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		this.tagQuery = this.markTags(urlParams.get("id"));
+		console.log(this.tagQuery);
 
+		this.selectedSort = "newest";
+
+		document.querySelector("#newestDropdown").addEventListener("click", (event) => {
+			this.selectedSort = "newest";
+			this.updateResults();
+		});
+
+		document.querySelector("#oldestDropdown").addEventListener("click", (event) => {
+			this.selectedSort = "oldest";
+			this.updateResults();
+		});
+
+		document.querySelector("#likesDropdown").addEventListener("click", (event) => {
+			this.selectedSort = "likes";
+			this.updateResults();
+		});
+
+		document.querySelector("#viewsDropdown").addEventListener("click", (event) => {
+			this.selectedSort = "views";
+			this.updateResults();
+		});
+
+		this.updateResults();
+	}
+
+	updateResults(){
+		var instructions = [];
+		switch(this.selectedSort){
+			case "newest":
+				instructions.push("timestamp");
+				instructions.push("desc");
+				break;
+			case "oldest":
+				instructions.push("timestamp");
+				instructions.push("asc");
+				break;
+			case "likes":
+				instructions.push("timestamp");
+				instructions.push("asc");
+				break;
+			case "views":
+				instructions.push("timestamp");
+				instructions.push("asc");
+				break;
+			default:
+				return;
+		}
+
+		queryMachine.querySearchResults(this.tagQuery, instructions).then((posts) => {
+			while(document.querySelector("#indexResults").lastChild){
+				document.querySelector("#indexResults").removeChild(document.querySelector("#indexResults").lastChild);
+			}
+			posts.forEach((post) => {
+				document.querySelector("#indexResults").appendChild(createPreviewCard(post));
+			})
+		})
+	}
+
+	markTags(tagString){
+		if(!tagString.includes("#")){
+			return this.markTagsNoHash(tagString);
+		}
+
+		tagString = tagString.replace(/\s/g,"");
+
+		while(tagString.includes("##")){
+			tagString = tagString.replace("##", "#");
+		}
+
+		while(tagString.endsWith("#")){
+			tagString = tagString.substring(0, tagString.length - 1);
+		}
+
+		for(let i = 0; i < tagString.length; i++){
+			if(tagString.charAt(i) == "#"){
+				tagString = tagString.slice(i);
+				break;
+			}
+		}
+
+		var tags = tagString.split("#");
+
+		for(let i = 0; i < tags.length; i++){
+			if(tags[i] == ""){
+				tags.splice(i, 1);
+			}
+		}
+		return tags;
+	}
+
+	markTagsNoHash(tagString){
+		var tags = tagString.split(" ");
+		for(let i = 0; i < tags.length; i++){
+			if(tags[i] == ""){
+				tags.splice(i, 1);
+			}
+		}
+		return tags;
+	}
 }
 
 // SIGNINPAGE CLASS
@@ -571,7 +726,69 @@ rhit.signinPage = class {
 // HOME PAGE CLASS
 
 rhit.homePage = class {
+	constructor(){
+		if(!document.querySelector("#indexResults")){
+			window.location.href = "/";
+		}
 
+		this.selectedSort = "newest";
+
+		document.querySelector("#newestDropdown").addEventListener("click", (event) => {
+			this.selectedSort = "newest";
+			this.updateHome();
+		});
+
+		document.querySelector("#oldestDropdown").addEventListener("click", (event) => {
+			this.selectedSort = "oldest";
+			this.updateHome();
+		});
+
+		document.querySelector("#likesDropdown").addEventListener("click", (event) => {
+			this.selectedSort = "likes";
+			this.updateHome();
+		});
+
+		document.querySelector("#viewsDropdown").addEventListener("click", (event) => {
+			this.selectedSort = "views";
+			this.updateHome();
+		});
+
+		this.updateHome();
+
+	}
+
+	updateHome(){
+		var instructions = [];
+		switch(this.selectedSort){
+			case "newest":
+				instructions.push("timestamp");
+				instructions.push("desc");
+				break;
+			case "oldest":
+				instructions.push("timestamp");
+				instructions.push("asc");
+				break;
+			case "likes":
+				instructions.push("timestamp");
+				instructions.push("asc");
+				break;
+			case "views":
+				instructions.push("timestamp");
+				instructions.push("asc");
+				break;
+			default:
+				return;
+		}
+
+		queryMachine.queryAllPosts(instructions).then((posts) => {
+			while(document.querySelector("#indexResults").lastChild){
+				document.querySelector("#indexResults").removeChild(document.querySelector("#indexResults").lastChild);
+			}
+			posts.forEach((post) => {
+				document.querySelector("#indexResults").appendChild(createPreviewCard(post));
+			})
+		})
+	}
 }
 
 // RECOMMENDED PAGE CLASS
@@ -581,13 +798,15 @@ rhit.recommendationPage = class {
 }
 
 // BOOKMARK PAGE CLASS
+// STILL NEED TO ADD DELETE BOOKMARK FUNCTION
 
 rhit.bookmarkPage = class {
-	listBookMarks(){
-		rhit.currentUser.bookmarked.forEach((postId) => {
+	constructor(){}
+	listBookMarks(bookmarks){
+		bookmarks.forEach((postId) => {
 			queryMachine.getPost(postId).then((post) => {
-				
-			})
+				document.querySelector("#bookmarks").appendChild(createPreviewCard(post));
+			});
 		});
 	}
 }
@@ -603,15 +822,30 @@ rhit.main = function () {
 	authentication.beginListening((_user) => {
 		rhit._user = _user;
 	});
-	
-	if(false){
 
+	if(document.querySelector("#searchBtn")){
+		document.querySelector("#searchBtn").addEventListener("click", (event) => {
+			console.log("searchInputRead");
+			// window.location.href = `/searchPage.html?id=${document.querySelector("#searchBarInputText").value}`
+		})
+	}
+	
+	if((window.location.href.includes("/#") || window.location.href == "/") && false){
+		currentPage = new rhit.homePage();
 	} else if(window.location.href.includes("addPost.html")){
 		currentPage = new rhit.addPostPage();
 	} else if(window.location.href.includes("detailPostPage.html")){
 		currentPage = new rhit.detailPage();
 	} else if(window.location.href.includes("SigninPage.html")){
 		currentPage = new rhit.signinPage();
+	} else if(window.location.href.includes("bookmarkPage.html")){
+		currentPage = new rhit.bookmarkPage();
+	} else if(window.location.href.includes("recommendedPage.html")){
+		currentPage = new rhit.recommendationPage();
+	} else if(window.location.href.includes("searchPage.html")){
+		currentPage = new rhit.searchPage();
+	} else {
+		currentPage = new rhit.homePage();
 	}
 
 
