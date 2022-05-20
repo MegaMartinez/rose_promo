@@ -57,7 +57,7 @@
           <!-- //do not show this when logged in -->
 
           <form class="form-inline my-2 my-lg-0">
-            <input id="searchBarInputText" type="text" placeholder="Search..">
+            <input id="searchBarInputText" type="text" placeholder="Search by Tag...">
             <button id="searchBtn" class="btn " type="submit">Search</button>
           </form>
         </ul>
@@ -78,11 +78,13 @@
       <div id="dropDownSortingSelection" class="dropdown display-inline-block">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
-          sort by
-        </button> 
+          Sort
+        </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <button class="dropdown-item" type="button">Date of post: acceding</button>
-          <button class="dropdown-item" type="button">Date of post: deccending</button>
+          <button id="newestDropdown" class="dropdown-item" type="button">Newest</button>
+          <button id="oldestDropdown" class="dropdown-item" type="button">Oldest</button>
+          <button id="likesDropdown" class="dropdown-item" type="button">Likes</button>
+          <button id="viewsDropdown" class="dropdown-item" type="button">Views</button>
         </div>
       </div>
       <!-- //drop down selection menu -->
