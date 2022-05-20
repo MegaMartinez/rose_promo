@@ -51,16 +51,11 @@
         <ul class="navbar-nav ml-auto">
           <!-- do not show this when logged in -->
           <li class="nav-item">
-            <a id="signInNavItem" class="nav-link" href="/SigninPage.html">Sign-in</a>
+            <a id="signInNavItem" class="nav-link display-inline-block" href="/SigninPage.html">Sign-in</a>
+            <input id="searchBarInputText" class="display-inline-block" type="text" placeholder="Search..">
+            <button id="searchBtn" class="btn display-inline-block" type="submit">Search</button>
           </li>
           <!-- //do not show this when logged in -->
-
-          <form class="form-inline my-2 my-lg-0">
-            <input id="searchBarInputText" type="text" placeholder="Search by Tag...">
-            <button id="searchBtn" class="btn " type="submit">Search</button>
-          </form>
-        </ul>
-
 
       </div>
     </nav>
@@ -117,7 +112,7 @@
                     <a href="link for tagged posts goes here" tabindex="0">#tag1</a>
                     <a href="link for tagged posts goes here" tabindex="0">#tag2</a>
                   </small></p>
-                <p class="card-text postpreview-text" >detail goes here</p>
+                <p class="card-text postpreview-text">detail goes here</p>
               </div>
             </div>
           </a>
@@ -133,7 +128,7 @@
     <!-- add button button right -->
     <!-- Only shows when logged in -->
 
-      <button id="fab" type="button" class="btn  bmd-btn-fab showWhenLoggedIn" data-toggle="modal" style="display: none;"
+    <button id="fab" type="button" class="btn  bmd-btn-fab showWhenLoggedIn" data-toggle="modal" style="display: none;"
       data-target="#askAddNewPost">
       <i class="material-icons">add</i>
     </button>
