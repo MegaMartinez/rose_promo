@@ -697,38 +697,6 @@ rhit.searchPage = class {
 	}
 
 	markTags(tagString){
-		if(!tagString.includes("#")){
-			return this.markTagsNoHash(tagString);
-		}
-
-		tagString = tagString.replace(/\s/g,"");
-
-		while(tagString.includes("##")){
-			tagString = tagString.replace("##", "#");
-		}
-
-		while(tagString.endsWith("#")){
-			tagString = tagString.substring(0, tagString.length - 1);
-		}
-
-		for(let i = 0; i < tagString.length; i++){
-			if(tagString.charAt(i) == "#"){
-				tagString = tagString.slice(i);
-				break;
-			}
-		}
-
-		var tags = tagString.split("#");
-
-		for(let i = 0; i < tags.length; i++){
-			if(tags[i] == ""){
-				tags.splice(i, 1);
-			}
-		}
-		return tags;
-	}
-
-	markTagsNoHash(tagString){
 		var tags = tagString.split(" ");
 		for(let i = 0; i < tags.length; i++){
 			if(tags[i] == ""){
@@ -872,7 +840,8 @@ rhit.main = function () {
 	if(document.querySelector("#searchBtn")){
 		document.querySelector("#searchBtn").addEventListener("click", (event) => {
 			if(document.querySelector("#searchBarInputText").value){
-				window.location.href = `/searchPage.html?id=${document.querySelector("#searchBarInputText").value}`
+				var value = document.querySelector("#searchBarInputText").value.replace(/[#]/g," ");
+				window.location.href = `/searchPage.html?id=${value}`
 			}
 		})
 	}
