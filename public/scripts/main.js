@@ -50,6 +50,10 @@ rhit.currentUserTemp = class {
 		this.liked = liked;
 		this.bookmarked = bookmarked;
 
+		if(window.location.href.includes("recommendedPage.html")){
+			currentPage.listRecommendations(this.viewed, this.liked, this.bookmarked);
+		}
+
 		if(window.location.href.includes("detailPostPage.html")){
 			currentPage.addView();
 			currentPage.updateView();
@@ -63,11 +67,13 @@ rhit.currentUserTemp = class {
 			currentPage.listBookMarks(this.bookmarked);
 		}
 
-		document.querySelector("#signInNavItem").innerHTML = "Sign-Out";
-		document.querySelector("#signInNavItem").href = "/";
-		document.querySelector("#signInNavItem").addEventListener("click", (event) => {
-			authentication.signOut();
-		});
+		if(document.querySelector("#signInNavItem")){
+			document.querySelector("#signInNavItem").innerHTML = "Sign-Out";
+			document.querySelector("#signInNavItem").href = "/";
+			document.querySelector("#signInNavItem").addEventListener("click", (event) => {
+				authentication.signOut();
+			});
+		}
 
 		document.querySelector("#recNav").style.display = "block";
 		document.querySelector("#bookNav").style.display = "block";
@@ -315,6 +321,16 @@ rhit.QueryMachine = class {
 		// })
 
 		return query.orderBy(instructions[0], instructions[1]).limit(50).get().then((docResults) => {
+			var posts = [];
+			docResults.forEach((doc) => {
+				posts.push(new rhit.post(doc.id, doc.data().title, doc.data().author, doc.data().content, doc.data().likes, doc.data().replies, doc.data().views, doc.data().timestamp.toDate(), doc.data().tags));
+			});
+			return posts;
+		});
+	}
+
+	queryUnlimited(){
+		return this.posts.get().then((docResults) => {
 			var posts = [];
 			docResults.forEach((doc) => {
 				posts.push(new rhit.post(doc.id, doc.data().title, doc.data().author, doc.data().content, doc.data().likes, doc.data().replies, doc.data().views, doc.data().timestamp.toDate(), doc.data().tags));
@@ -785,12 +801,146 @@ rhit.homePage = class {
 	}
 }
 
-// RECOMMENDED PAGE CLASS
+// RECOMMENDED PAGE CLASS (and mergeSorter below)
 
 rhit.recommendationPage = class {
 	constructor(){}
-	listRecommendations(viewed){
-		
+	listRecommendations(viewed, liked, bookmarked){
+		while(document.querySelector("#recommendations").lastChild){
+			document.querySelector("#recommendations").removeChild(document.querySelector("#recommendations").lastChild);
+		}
+
+		var posts = [];
+
+		var viewedCounter = 0;
+
+		viewed.forEach((postId) => {
+			queryMachine.getPost(postId).then((post) => {
+				posts.push(post);
+				viewedCounter++;
+				if(viewedCounter == viewed.length){
+					this.continueFunction(posts, viewed, liked, bookmarked);
+				}
+			});
+		});
+	}
+
+	continueFunction(posts, viewed, liked, bookmarked){
+
+		var tags = [];
+
+		posts.forEach((post) => {
+			post.tags.forEach((tag) => {
+				var score = 0;
+				if(liked.includes(post.id) && bookmarked.includes(post.id)){
+					score += 25
+				} else if(liked.includes(post.id)){
+					score += 10;
+				} else {
+					score += 1;
+				}
+				if(this.checkForTag(tags, tag)){
+					let index = this.getIndexOfTag(tags, tag);
+					score += tags[index]["score"];
+					tags[index]["score"] = score;
+				} else {
+					let obj = {
+						"tag": tag,
+						"score": score
+					};
+					tags.push(obj);
+				}
+			});
+		});
+
+		var postsWithScores = [];
+
+		var mergeSorter = new rhit.mergeSorter();
+
+		queryMachine.queryUnlimited().then((posts) => {
+			posts.forEach((post) => {
+				var score = 0;
+				post.tags.forEach((tag) => {
+					if(this.checkForTag(tags, tag)){
+						score += tags[this.getIndexOfTag(tags, tag)]["score"];
+					}
+				});
+				if(score > 0){
+					let obj = {
+						"post": post,
+						"score": score
+					};
+					postsWithScores.push(obj);
+				}
+			});
+		}).then(() => {
+			postsWithScores = mergeSorter.mergeSort(postsWithScores);
+			postsWithScores.reverse();
+			for(let i = 0; i < postsWithScores.length; i++){
+				document.querySelector("#recommendations").appendChild(createPreviewCard(postsWithScores[i]["post"]));
+				if(i == 49){
+					break;
+				}
+			}
+		});
+
+	}
+
+	checkForTag(tags, tag){
+
+		var ans = false;
+
+		for(let i = 0; i < tags.length; i++){
+			if(tags[i]["tag"] == tag){
+				ans = true;
+				break;
+			}
+		}
+
+		return ans;
+	}
+
+	getIndexOfTag(tags, tag){
+		for(let i = 0; i < tags.length; i++){
+			if(tags[i]["tag"] == tag){
+				return i;
+			}
+		}
+		return null;
+	}
+
+}
+
+rhit.mergeSorter = class {
+	constructor(){}
+	merge (left, right) {
+		let resultArray = [], leftIndex = 0, rightIndex = 0;
+	  
+		while (leftIndex < left.length && rightIndex < right.length) {
+			if (left[leftIndex]["score"] < right[rightIndex]["score"]) {
+				resultArray.push(left[leftIndex]);
+				leftIndex++;
+			} else {
+				resultArray.push(right[rightIndex]);
+				rightIndex++;
+			}
+		}
+	  
+		return resultArray.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
+	}
+
+	mergeSort (unsortedArray) {
+		if (unsortedArray.length <= 1) {
+			return unsortedArray;
+		}
+		const middle = Math.floor(unsortedArray.length / 2);
+	  
+		const left = unsortedArray.slice(0, middle);
+		const right = unsortedArray.slice(middle);
+	  
+		return this.merge(
+			this.mergeSort(left), this.mergeSort(right)
+		);
 	}
 }
 
