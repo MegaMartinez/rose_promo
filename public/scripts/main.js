@@ -779,12 +779,12 @@ rhit.homePage = class {
 				instructions.push("asc");
 				break;
 			case "likes":
-				instructions.push("timestamp");
-				instructions.push("asc");
+				instructions.push("likes");
+				instructions.push("desc");
 				break;
 			case "views":
-				instructions.push("timestamp");
-				instructions.push("asc");
+				instructions.push("views");
+				instructions.push("desc");
 				break;
 			default:
 				return;
@@ -830,27 +830,29 @@ rhit.recommendationPage = class {
 		var tags = [];
 
 		posts.forEach((post) => {
-			post.tags.forEach((tag) => {
-				var score = 0;
-				if(liked.includes(post.id) && bookmarked.includes(post.id)){
-					score += 25
-				} else if(liked.includes(post.id)){
-					score += 10;
-				} else {
-					score += 1;
-				}
-				if(this.checkForTag(tags, tag)){
-					let index = this.getIndexOfTag(tags, tag);
-					score += tags[index]["score"];
-					tags[index]["score"] = score;
-				} else {
-					let obj = {
-						"tag": tag,
-						"score": score
-					};
-					tags.push(obj);
-				}
-			});
+			if(post){
+				post.tags.forEach((tag) => {
+					var score = 0;
+					if(liked.includes(post.id) && bookmarked.includes(post.id)){
+						score += 25
+					} else if(liked.includes(post.id)){
+						score += 10;
+					} else {
+						score += 1;
+					}
+					if(this.checkForTag(tags, tag)){
+						let index = this.getIndexOfTag(tags, tag);
+						score += tags[index]["score"];
+						tags[index]["score"] = score;
+					} else {
+						let obj = {
+							"tag": tag,
+							"score": score
+						};
+						tags.push(obj);
+					}
+				});
+			}
 		});
 
 		var postsWithScores = [];
@@ -996,9 +998,7 @@ rhit.main = function () {
 		})
 	}
 	
-	if((window.location.href.includes("/#") || window.location.href == "/") && false){
-		currentPage = new rhit.homePage();
-	} else if(window.location.href.includes("addPost.html")){
+	if(window.location.href.includes("addPost.html")){
 		currentPage = new rhit.addPostPage();
 	} else if(window.location.href.includes("detailPostPage.html")){
 		currentPage = new rhit.detailPage();
