@@ -957,20 +957,20 @@ rhit.bookmarkPage = class {
 			document.querySelector("#bookmarks").removeChild(document.querySelector("#bookmarks").lastChild);
 		}
 
-		var markBtn = null;
-
-		const func = (event) => {
-			queryMachine.removeBookmark(markBtn.dataset.postid);
-		}
+		var postCount = 0;
 
 		bookmarks.forEach((postId) => {
 			queryMachine.getPost(postId).then((post) => {
 				document.querySelector("#bookmarks").appendChild(createPreviewCard(post));
 			}).then(() => {
-				document.querySelectorAll(".deleteBookmarkButton").forEach((deleteBookmarkButton) => {
-					markBtn = deleteBookmarkButton;
-					deleteBookmarkButton.addEventListener("click", func);
-				});
+				postCount++;
+				if(postCount == bookmarks.length){
+					document.querySelectorAll(".deleteBookmarkButton").forEach((deleteBookmarkButton) => {
+						deleteBookmarkButton.addEventListener("click", (event) => {
+							queryMachine.removeBookmark(deleteBookmarkButton.dataset.postid);
+						});
+					});
+				}
 			});
 		});
 
